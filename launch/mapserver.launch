@@ -1,0 +1,21 @@
+ <launch>
+ 
+	<!--======== map server ========-->
+	<node name="map_server" pkg="map_server" type="map_server" args="/home/dal/ros1_ws/map/dal262.yaml">
+		<!--<remap from="map" to="map_amcl"/>-->
+    </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="/home/dal/ros1_ws/config/amcl.config.rviz">
+		<!--<remap from="map" to="map_amcl"/>-->
+    </node>
+
+    <!-- Map server (for nav)
+	<node name="map_server_nav" pkg="map_server" type="map_server" args="$(find hypharos_minibot)/map/map_nav.yaml"/>-->
+
+	
+	<!--=========== amcl ===========-->
+    <!--<arg name="init_x" default="0" />
+    <arg name="init_y" default="0" />
+    <arg name="init_a" default="0" />-->
+	<!--<remap from="map" to="map_amcl"/>-->
+
+</launch>

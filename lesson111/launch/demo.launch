@@ -1,0 +1,8 @@
+<launch>
+
+
+    <!-- 启动节点 -->
+    <node name="lesson1_laser_scan_node" pkg="lesson1" type="lesson1_laser_scan_node" output="screen" />
+
+
+</launch>

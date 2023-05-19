@@ -1,0 +1,5 @@
+ <launch>
+	<node name="rosbag" pkg="rosbag" type="play"
+          args="-d 5 -r 1 --clock --hz 10 /home/dal/rosbag/0327/2023-03-27-19-50-54.bag"/>
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 map world" /> -->
+</launch>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<!-- setting pose: 47.943 21.421 -0.503
+setting pose: 30.329 34.644 3.142
+117.5s -->
+<launch>
+    <arg name="bag_filename" default="/home/dal/rosbag/2023-04-29-16-14-55.bag"/>
+    <param name="/use_sim_time" value="true"/>
+    <node name="rosbag" pkg="rosbag" type="play"
+            args="-d 5 -r 1 --clock --hz 10 $(arg bag_filename)"/>
+    <node name="rvizshow" pkg="rviz" type="rviz" args="-d /home/dal/ros1_ws/src/config/mb_amcl_lidar.rviz"/>
+
+</launch>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="/use_sim_time" value="false"/>
+  <include file="$(find pf_driver)/launch/r2000.launch"/>
+
+ </launch>

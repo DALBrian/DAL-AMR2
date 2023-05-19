@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- Test map_server + hector_mapping, use bag file -->
+<launch>
+     <arg name="bag_filename" default="/home/dal/rosbag/2023-04-14-14-46-08.bag"/>
+     <arg name="map_file" value="/home/dal/ros1_ws/map/0410-1.yaml" />
+
+     <include file="$(find hector_slam_launch)/launch/bringup_hector_only.launch"/>
+     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+     <node name="playbag" pkg="rosbag" type="play" args="--clock $(arg bag_filename)" />
+</launch>

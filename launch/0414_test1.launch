@@ -1,0 +1,9 @@
+<!-- Test hector_slam + imu and static_tf -->
+<launch>
+	<!-- <include file="$(find pepperl_fuchs_r2000)/launch/r2000.launch"/> -->
+    <include file="$(find hector_slam_launch)/launch/tutorial.launch"/>
+    <include file="$(find handsfree_ros_imu)/launch/IMU_bringup.launch"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_map_odom" args="0 0 0 0 0 0 map odom"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_odom_basefootprint" args="0 0 0 0 0 0 odom base_footprint" />
+	<node pkg="tf2_ros" type="static_transform_publisher" name="tf2_basefootprint_baselink" args="0 0 0 1.57 0 0 base_footprint base_link" />
+</launch>

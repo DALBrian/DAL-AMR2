@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="ros_tcp_server" pkg="tcp_ros" type="ros_tcp_server" output="screen"/>
+    <param name="arm_ip" value="172.31.1.147"/>
+    <param name="arm_port" value="59152"/>
+    <param name="my_ip" value="172.31.1.11"/>
+</launch>

@@ -1,0 +1,68 @@
+./src/project2/.vscode/browse.vc.db
+./cartographer_ros/cartographer_paper_deutsches_museum.bag
+./.git/objects/d5/54945201d067f4597e1de0b71bd09b21a3934e
+./src/project2/.vscode/browse.vc.db
+./cartographer_ros/cartographer_paper_deutsches_museum.bag
+./.git/objects/d5/54945201d067f4597e1de0b71bd09b21a3934e
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#cartographer slam
+# Ignore all bazel-* symlinks.
+/bazel-*
+# Ignore Bazel verbose explanations
+--verbose_explanations
+# Ignore CMake usual build directory
+build
+# Ignore Vim files
+*.swp
+# Ignore QtCreator Project file
+CMakeLists.txt.user
+# Ignore VS Code files
+.vscode/*
+# Ignore generated python artifacts
+*.pyc
+copts/__pycache__/
+
+#hector slam
+bin/
+build/
+lib/
+msg_gen/
+srv_gen/
+hector_mapping/src/hector_mapping/
+hector_nav_msgs/src/hector_nav_msgs/
+.idea/
+.vscode/
+cmake-build-*/
+

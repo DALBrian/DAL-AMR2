@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+<node name="odom_move" pkg="motor_control" type="odom_move" output="screen"/>
+    <param name="dx" value="0.1"/>
+    <param name="dy" value="0.0"/>
+</launch>

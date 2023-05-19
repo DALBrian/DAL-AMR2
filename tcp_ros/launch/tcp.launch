@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+<<<<<<< HEAD
+  <node name="ros_tcp_client" pkg="TCP_ROS" type="ros_tcp_client" output="screen"/>
+=======
+  <!-- <node name="ros_tcp_client" pkg="TCP_ROS" type="ros_tcp_client" output="screen"/> -->
+>>>>>>> db9904d210a1fbeefccfc96cadcdb09058d79bf1
+  <node name="ros_tcp_server" pkg="TCP_ROS" type="ros_tcp_server" output="screen"/>
+</launch>

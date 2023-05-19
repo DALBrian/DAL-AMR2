@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- <arg name="frame_id" default="base_link"/> -->
+  <arg name="frame_id" default="laser_link"/>
+  <arg name="scanner_ip" default="192.168.2.2"/>
+  <arg name="scan_frequency" default="35"/>
+  <arg name="samples_per_scan" default="3600"/>
+
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_lidar" args="0.765 -0.739999 0.0 0 0 0 base_link laser_link"/> -->
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_lidar" args="0.765 0.739999 0.48751 0 0 0 base_link laser_link"/> -->
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_lidar" args="0 0 0 0 0 0 base_link laser_link"/>
+
+
+  <!-- R2000 Driver -->
+  <node pkg="pepperl_fuchs_r2000" type="r2000_node" name="r2000_node" respawn="true" output="screen">
+    <param name="frame_id" value="$(arg frame_id)"/>
+    <param name="scanner_ip" value="$(arg scanner_ip)"/>
+    <param name="scan_frequency" value="$(arg scan_frequency)"/>
+    <param name="samples_per_scan" value="$(arg samples_per_scan)"/>
+  </node>
+
+  <!-- RVIZ -->
+  <!-- <node pkg="rviz" type="rviz" name="$(anon rviz)" respawn="false" output="screen" args="-d $(find pepperl_fuchs_r2000)/rviz/rviz.rviz"/> -->
+
+</launch>

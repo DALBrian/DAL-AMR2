@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="teleop_amr" pkg="kinematic_compensation" type="countdown_moving" output="screen"/>
+</launch>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<launch>
+<node name="motor_control" pkg="motor_control" type="countdown" output="screen"/>
+    <!-- <param name="~vel_gain" value="1"/> -->
+</launch>

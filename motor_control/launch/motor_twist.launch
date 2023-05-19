@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+<node name="motor_control" pkg="motor_control" type="main_move_0428.py" output="screen"/>
+</launch>

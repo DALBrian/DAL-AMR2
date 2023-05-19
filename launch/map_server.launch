@@ -1,0 +1,7 @@
+<launch>
+    <arg name="map_file" value="/home/dal/ros1_ws/map/202304141452.yaml" />
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+    <node pkg="rviz" type="rviz" name="amcl_show" args="-d /home/dal/ros1_ws/src/config/mb_amcl_lidar.rviz"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_map_base_link" args="1 0 0 0 0 0 map base_link"/>
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="tf2_base_link_laser_link" args="1 0 0 0 0 0 base_link laser_link" /> -->
+</launch>

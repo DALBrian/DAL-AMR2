@@ -1,0 +1,10 @@
+
+
+<launch>
+
+    <!-- base_link to front_laser_link -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="link_broadcaster" 
+        args="0 0 0.254 0 0 3.1415926 base_link front_laser_link" />
+
+    <node pkg="rviz" type="rviz" name="rviz" />
+</launch>

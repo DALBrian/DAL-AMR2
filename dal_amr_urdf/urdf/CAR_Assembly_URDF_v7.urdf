@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="dal_amr_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0261585294959161 0.0207599841560278 0.365123806876851"
+        rpy="0 0 0" />
+      <mass
+        value="1106.05430410529" />
+      <inertia
+        ixx="30.066170253479"
+        ixy="-0.0415848053290866"
+        ixz="-0.53238832239181"
+        iyy="28.7861915042776"
+        iyz="0.0642936150198036"
+        izz="48.0522582435528" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="R-R_wheel_link">
+    <inertial>
+      <origin
+        xyz="0.000837352246583434 0.074999972132261 -2.07541284916249E-05"
+        rpy="0 0 0" />
+      <mass
+        value="10.8599966783425" />
+      <inertia
+        ixx="0.0459453194105362"
+        ixy="1.37623721803839E-08"
+        ixz="2.0567706879708E-06"
+        iyy="0.0755405084811452"
+        iyz="-2.9740265855708E-08"
+        izz="0.0459505234666675" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/R-R_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/R-R_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="R-R_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="-0.60085 -1.001 0.18751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="R-R_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="R-F_wheel_link">
+    <inertial>
+      <origin
+        xyz="0.000861331215951111 0.0750000221750111 -1.5873312427403E-05"
+        rpy="0 0 0" />
+      <mass
+        value="10.8599965368607" />
+      <inertia
+        ixx="0.0459476780656676"
+        ixy="-1.23349354784199E-08"
+        ixz="-3.27048841674836E-06"
+        iyy="0.0755405083455259"
+        iyz="3.20025319341568E-08"
+        izz="0.0459481647632598" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/R-F_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/R-F_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="R-F_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.59915 -1.001 0.18751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="R-F_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="L-R_wheel_link">
+    <inertial>
+      <origin
+        xyz="-0.00082536642825537 -0.0749999727162014 9.5729200058764E-06"
+        rpy="0 0 0" />
+      <mass
+        value="10.8599965274659" />
+      <inertia
+        ixx="0.0459502044190201"
+        ixy="-3.21465114317733E-08"
+        ixz="2.40441780102815E-06"
+        iyy="0.0755405081550335"
+        iyz="1.21842543537048E-08"
+        izz="0.0459456382133597" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/L-R_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/L-R_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L-R_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="-0.59915 1.001 0.18751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="L-R_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="L-F_wheel_link">
+    <inertial>
+      <origin
+        xyz="-0.00082963837710226 -0.0749999778249339 -1.58733125112387E-05"
+        rpy="0 0 0" />
+      <mass
+        value="10.8599965368607" />
+      <inertia
+        ixx="0.0459476780656694"
+        ixy="-1.23349355070176E-08"
+        ixz="-3.27048841586967E-06"
+        iyy="0.0755405083455284"
+        iyz="3.20025306280555E-08"
+        izz="0.0459481647632624" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/L-F_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/L-F_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="L-F_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.60085 1.001 0.18751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="L-F_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="laser_link">
+    <inertial>
+      <origin
+        xyz="7.54806509695172E-06 0.000904387104686655 -0.0378632905447961"
+        rpy="0 0 0" />
+      <mass
+        value="0.78633137266118" />
+      <inertia
+        ixx="0.00127802962224363"
+        ixy="-2.72188723631283E-07"
+        ixz="1.91076054946291E-07"
+        iyy="0.0012469905533279"
+        iyz="5.36961290094029E-06"
+        izz="0.00109111857909315" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/laser_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/laser_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="laser_joint"
+    type="fixed">
+    <origin
+      xyz="0.765 -0.73999 0.56751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="laser_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="laser_link2">
+    <inertial>
+      <origin
+        xyz="7.54806509717376E-06 0.000904387104687543 -0.0378632905447973"
+        rpy="0 0 0" />
+      <mass
+        value="0.786331372661181" />
+      <inertia
+        ixx="0.00127802962224362"
+        ixy="-2.72188723626779E-07"
+        ixz="1.9107605494226E-07"
+        iyy="0.00124699055332788"
+        iyz="5.36961290093202E-06"
+        izz="0.00109111857909317" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/laser_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dal_amr_urdf/meshes/laser_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="laser_joint2"
+    type="fixed">
+    <origin
+      xyz="-0.765 -0.73399 0.56751"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="laser_link2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

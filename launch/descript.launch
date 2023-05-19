@@ -1,0 +1,28 @@
+<launch>
+  <param
+    name="robot_description"
+    textfile="$(find CAR_Assembly_URDF_v6)/urdf/CAR_Assembly_URDF_v6.urdf" />
+ 
+  <!-- send fake joint values -->
+  <node 
+    name="joint_state_publisher" 
+    pkg="joint_state_publisher" 
+    type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+  </node>
+ 
+  <!-- Combine joint values -->
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+ 
+  <!-- Display -->
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    respawn="false"
+    output="screen"
+     />
+</launch>

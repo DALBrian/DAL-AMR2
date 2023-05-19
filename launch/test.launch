@@ -1,0 +1,7 @@
+ <launch>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find amcl)/test/willow-full.pgm 0.1">
+		 <param name="frame_id" value="map"/>
+		<!--<remap from="map" to="map_amcl"/>-->
+    </node>
+	<node pkg="rviz" type="rviz" name="rviz" args="-d /home/dal/ros1_ws/src/config/amcl_config.rviz" output="screen"/>
+</launch>
