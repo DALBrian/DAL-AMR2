@@ -207,5 +207,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(dal_tf src/odom_publish.cpp)
-target_link_libraries(dal_tf ${catkin_LIBRARIES} )
+add_executable(dal_tf2 src/imu_lidar_tf.cpp)
+target_link_libraries(dal_tf2 ${catkin_LIBRARIES} )

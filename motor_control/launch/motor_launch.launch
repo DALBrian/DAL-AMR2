@@ -4,6 +4,6 @@
 <node name="motor_control" pkg="motor_control" type="ros_motor_v2.py" output="screen"/>
     <param name="vel_gain" value="38.0"/>
     <param name="omg_gain" value="5.5"/>
-    <param name="port" value="/dev/ttyUSB1"/>
+    <param name="port" value="/dev/ttyUSB0"/>
     <!-- <param name="~vel_gain" value="1"/> -->
 </launch>

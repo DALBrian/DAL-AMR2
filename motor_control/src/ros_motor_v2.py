@@ -76,12 +76,15 @@ class command():
         move.motor2(int(self.rotating_speed[1][0]))
         move.motor3(int(self.rotating_speed[2][0]))
         move.motor4(int(self.rotating_speed[3][0]))
+        
 
 
+#
 
 if __name__ == '__main__':
     rospy.init_node('motor_control', anonymous=True)
-    port =  rospy.get_param('port', '/dev/ttyUSB1')
+    port =  rospy.get_param('port', '/dev/ttyUSB0')
+    print("Connect to port: ", port)
     driver = driver_connection.driver_connection(PORT = port)
     move = chassic_kinematic_v3.chassic_kinematic(driver)
     com = command()

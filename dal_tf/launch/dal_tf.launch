@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="dal_amr_tf_IMU_Laser_publisher" pkg="dal_tf" type="tf_broadcaster" output="screen"/>
+  <node name="imu_lidar_tf" pkg="dal_tf" type="dal_tf2" output="screen"/>
 </launch>

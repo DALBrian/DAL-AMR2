@@ -213,10 +213,14 @@ include_directories(${catkin_INCLUDE_DIRS})
 # install(TARGETS ros_tcp_client RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
   
 ##
-add_executable(ros_tcp_server src/ros_tcp_server_parse4_9.cpp)
+add_executable(ros_tcp_server src/ros_tcp_server_parse5_1.cpp)
 target_link_libraries(ros_tcp_server ${catkin_LIBRARIES} )
 install(TARGETS ros_tcp_server RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-add_executable(fake_publisher src/fake_publisher.cpp)
+add_executable(fake_publisher src/fake_publisher2.cpp)
 target_link_libraries(fake_publisher ${catkin_LIBRARIES} )
 install(TARGETS fake_publisher RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+add_executable(helloros src/helloros.cpp)
+target_link_libraries(helloros ${catkin_LIBRARIES} )
+install(TARGETS helloros RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

@@ -319,7 +319,9 @@ void Costmap2DROS::reconfigureCB(costmap_2d::Costmap2DConfig &config, uint32_t l
     map_update_thread_ = NULL;
   }
   map_update_thread_shutdown_ = false;
-  double map_update_frequency = config.update_frequency;
+  /*Hector_slam has a lower update freq, so set it to 0.5. Small Brian, 2023*/
+  // double map_update_frequency = config.update_frequency;
+  double map_update_frequency = 0.5;
 
   double map_publish_frequency = config.publish_frequency;
   if (map_publish_frequency > 0)

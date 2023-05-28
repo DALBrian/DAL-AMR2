@@ -19,9 +19,10 @@
 using namespace std;
 /**
  * @brief Create a ros node which is a ros publisher public info gets from TCP. 
- * @details Add received arm comm subscriber and send packet to arm, add isFinish to check arm finish movement
+ * @details Add axis control.
  * @author Small Brian
- * @date 2023/05/17
+ * @date 2023/05/27
+ * TODO: Software arm limitation check befroe send; if isFinish false, save it and send next time, don't skip
  **/
 class TCPConnect{
 public:
@@ -207,8 +208,9 @@ void TCPConnect::dataparse(){
         isFinish_ = received_msg_.substr(pisfinish + lpisfinish, pisfinishh - pisfinish - lpisfinish);
         // ROS_INFO("isFINISH = %s", isFinish_.c_str()); //For debug
         double test = stoi(isFinish_);
-        if (test > 0 ){ isFinish = true; ROS_INFO("isFinish is true!");} //isFinish > 0 True , isFinish < 0 False
-        else if(test < 0){isFinish = false; ROS_WARN("isFinish is false!");}
+        if (test > 0 ){ isFinish = true; 
+        /*ROS_INFO("isFinish is true!");*/} //isFinish > 0 True , isFinish < 0 False
+        else if(test < 0){isFinish = false; /*ROS_WARN("isFinish is false!");*/}
         // cout<<"x: "<<x<<" y: "<<y<<" z: "<<z<<" a: "<<a<<" b: "<<b<<" c: "<<c<<endl; //For debug
         check_sum2 = true;
     }else{check_sum2 = false;}
@@ -231,13 +233,19 @@ void TCPConnect::tcpsendCallback(const tcp_ros::ArmComm& msg){
     */
     ROS_INFO("Receive message from the topic: %s", subtopic.c_str());
     std::string sx, sy, sz, sa, sb, sc, isOut, stepmode;
+    std::string sa1, sa2, sa3, sa4, sa5, sa6;
     double sx_, sy_, sz_, sa_, sb_, sc_;
+    double sa1_, sa2_, sa3_, sa4_, sa5_, sa6_;
     double isOut_;
     sx_ = msg.x; sy_ = msg.y; sz_ = msg.z;
     sa_ = msg.a; sb_ = msg.b; sc_ = msg.c;
+    sa1_ = msg.j1; sa2_ = msg.j2; sa3_ = msg.j3; 
+    sa4_ = msg.j4; sa5_ = msg.j5; sa6_ = msg.j6; 
     stepmode = msg.stepmode;
     sx = to_string(sx_); sy = to_string(sy_); sz = to_string(sz_);
     sa = to_string(sa_); sb = to_string(sb_); sc = to_string(sc_);
+    sa1 = to_string(sa1_); sa2 = to_string(sa2_); sa3 = to_string(sa3_);
+    sa4 = to_string(sa4_); sa5 = to_string(sa5_); sa6 = to_string(sa6_);
     isOut_ = msg.isOut;
     stepmode = msg.stepmode;
     if (isOut_ > 0){
@@ -245,15 +253,16 @@ void TCPConnect::tcpsendCallback(const tcp_ros::ArmComm& msg){
     }else{
         isOut = "FALSE";}
     string packet = "<Sensor><Status><IsOut>" + isOut + "</IsOut></Status><StepMode>" + stepmode + "</StepMode><SX>" + sx + 
-        "</SX><SY>" + sy + "</SY><SZ>" + sz + "</SZ><SA>" + sa + "</SA><SB>" + sb+ "</SB><SC>" + sc + "</SC></Sensor>";
+        "</SX><SY>" + sy + "</SY><SZ>" + sz + "</SZ><SA>" + sa + "</SA><SB>" + sb+ "</SB><SC>" + sc + "</SC><SA1>"+ sa1 + "</SA1><SA2>" +
+        sa2 + "</SA2><SA3>" + sa3 + "</SA3><SA4>" + sa4 + "</SA4><SA5>" + sa5 + "</SA5><SA6>" + sa6 + "</SA6></Sensor>"; 
     
 
     if (isOpen == true && isFinish == true){
         //  ROS_INFO("IsFinish is TRUE! "); //For debug
-        // ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
+        ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
         send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
     }else if(isFinish == false){ROS_WARN("IsFinish is False, wait for arm finish current movement.");}
-    else{ROS_WARN("Cannot send to arm, ISOpen is false");}
+    else{ROS_WARN("Cannot send msg to arm, ISOpen is false");}
           
 }
 void TCPConnect::start(){

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="csvpath" pkg="kinematic_compensation" type="readfromCSV" output="screen"/>
+</launch>
