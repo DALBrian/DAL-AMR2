@@ -31,10 +31,11 @@ public:
     void checkaccept();
     void tcpclose();
     void tcprecv();
-    void tcpsendCallback(const tcp_ros::ArmComm& msg);
+    void sendtoArm(const tcp_ros::ArmComm& msg);
     // void tcpsend(string &msg);
     void dataparse();
     void start();
+    void checkAngle(vector<double> &angle);
 private:
     /*For socket(TCP/IP)*/
     int sock_fd, new_fd;
@@ -58,6 +59,7 @@ private:
     vector<double> armmsg;
     tcp_ros::ArmCoord arm_coord;
     std::string subtopic, pubtopic;
+    vector<double> axisAng;
 }; 
 TCPConnect::TCPConnect(string ip, int port){
     /*TCP connection*/
@@ -105,14 +107,7 @@ TCPConnect::~TCPConnect(){
     }
     isOpen = false; 
     close(sock_fd);}
-// void TCPConnect::checkaccept(){
-//     cout<<"Checking connection status"<<endl;
-//     printf("Waiting for connection \n");
-//     addrlen = sizeof(client_addr);
-//     new_fd = accept(sock_fd, (struct sockaddr *)&client_addr, &addrlen);
-//     printf("Connection established by %s:%d\n", inet_ntoa(client_addr.sin_addr),
-//         ntohs(client_addr.sin_port));   
-// }
+
 void TCPConnect::tcprecv(){
     while (true) {
         printf("Waiting for connection \n");
@@ -224,7 +219,7 @@ void TCPConnect::dataparse(){
         isPublished = false;
     }else{isValid = false;}
 }
-void TCPConnect::tcpsendCallback(const tcp_ros::ArmComm& msg){
+void TCPConnect::sendtoArm(const tcp_ros::ArmComm& msg){
     /*Add packet format as below
     ("<Sensor><Status><IsOut>TRUE</IsOut></Status><StepMode>0</StepMode><SX>" + Common.XP2[0].ToString() + 
     "</SX><SY>" + Common.XP2[1].ToString() + "</SY><SZ>" + Common.XP2[2].ToString() + "</SZ><SA>" + 
@@ -241,22 +236,20 @@ void TCPConnect::tcpsendCallback(const tcp_ros::ArmComm& msg){
     sa_ = msg.a; sb_ = msg.b; sc_ = msg.c;
     sa1_ = msg.j1; sa2_ = msg.j2; sa3_ = msg.j3; 
     sa4_ = msg.j4; sa5_ = msg.j5; sa6_ = msg.j6; 
-    stepmode = msg.stepmode;
+     axisAng.push_back(sa1_); axisAng.push_back(sa2_); axisAng.push_back(sa3_);
+    axisAng.push_back(sa4_); axisAng.push_back(sa5_); axisAng.push_back(sa6_);
+    checkAngle(axisAng);
     sx = to_string(sx_); sy = to_string(sy_); sz = to_string(sz_);
     sa = to_string(sa_); sb = to_string(sb_); sc = to_string(sc_);
-    sa1 = to_string(sa1_); sa2 = to_string(sa2_); sa3 = to_string(sa3_);
-    sa4 = to_string(sa4_); sa5 = to_string(sa5_); sa6 = to_string(sa6_);
+    sa1 = to_string(axisAng[0]); sa2 = to_string(axisAng[1]); sa3 = to_string(axisAng[2]);
+    sa4 = to_string(axisAng[3]); sa5 = to_string(axisAng[4]); sa6 = to_string(axisAng[5]);
     isOut_ = msg.isOut;
     stepmode = msg.stepmode;
-    if (isOut_ > 0){
-        isOut = "TRUE";
-    }else{
-        isOut = "FALSE";}
+    if (isOut_ > 0){isOut = "TRUE";} //Always find trubole using boolean in ROS msg, so use double instead
+    else{isOut = "FALSE";}
     string packet = "<Sensor><Status><IsOut>" + isOut + "</IsOut></Status><StepMode>" + stepmode + "</StepMode><SX>" + sx + 
         "</SX><SY>" + sy + "</SY><SZ>" + sz + "</SZ><SA>" + sa + "</SA><SB>" + sb+ "</SB><SC>" + sc + "</SC><SA1>"+ sa1 + "</SA1><SA2>" +
         sa2 + "</SA2><SA3>" + sa3 + "</SA3><SA4>" + sa4 + "</SA4><SA5>" + sa5 + "</SA5><SA6>" + sa6 + "</SA6></Sensor>"; 
-    
-
     if (isOpen == true && isFinish == true){
         //  ROS_INFO("IsFinish is TRUE! "); //For debug
         ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
@@ -265,11 +258,49 @@ void TCPConnect::tcpsendCallback(const tcp_ros::ArmComm& msg){
     else{ROS_WARN("Cannot send msg to arm, ISOpen is false");}
           
 }
+void checkAngle(vector<double> &angle){
+    /*20230528 built, haven't test yet*/
+    vector<int> exceedAxis;
+    for (size_t i = 0; i < angle.size(); i++){
+        switch (i){
+            case 0:
+                if (angle[i] < -30){angle[i] = -29; exceedAxis.push_back(i);}
+                else if(angle[i] > 185 ){angle[i] = 184; exceedAxis.push_back(i);}
+                break;
+            case 1:
+                if (angle[i] < -116){angle[i] = -115; exceedAxis.push_back(i);}
+                else if(angle[i] > 60 ){angle[i] = 59; exceedAxis.push_back(i);}
+                break;
+            case 2:
+                if (angle[i] < 74.55){angle[i] = 73; exceedAxis.push_back(i);}
+                else if(angle[i] > 160 ){angle[i] = 159; exceedAxis.push_back(i);}
+                break;
+            case 3:
+                if (angle[i] < -175){angle[i] = -174; exceedAxis.push_back(i);}
+                else if(angle[i] > 175 ){angle[i] = 174; exceedAxis.push_back(i);}
+                break;
+            case 4:
+                if (angle[i] < -125){angle[i] = -124; exceedAxis.push_back(i);}
+                else if(angle[i] > 125 ){angle[i] = 124; exceedAxis.push_back(i);}
+                break;  
+            case 5: 
+                if (angle[i] < -350){angle[i] = -349; exceedAxis.push_back(i);}
+                else if(angle[i] > 350 ){angle[i] = 349; exceedAxis.push_back(i);} 
+                break;  
+        }
+        
+    }
+    for (size_t i = 0; i < exceedAxis.size(); i++){
+        ROS_WARN("Axis %i exceed limitation, set to limitation value.", exceedAxis[i]);
+    }
+}
+
+
 void TCPConnect::start(){
     ROS_INFO("Start parallel processing sending and receiving to arm.");
     while(ros::ok()){
         std::thread t1(&TCPConnect::tcprecv, this);
-        ArmSub = nh_.subscribe(subtopic, 10, &TCPConnect::tcpsendCallback, this);
+        ArmSub = nh_.subscribe(subtopic, 10, &TCPConnect::sendtoArm, this);
         ros::spin();
     }
 }
