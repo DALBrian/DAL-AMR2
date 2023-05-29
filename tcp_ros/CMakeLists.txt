@@ -213,7 +213,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 # install(TARGETS ros_tcp_client RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
   
 ##
-add_executable(ros_tcp_server src/ros_tcp_server_parse5_1.cpp)
+add_executable(ros_tcp_server src/ros_tcp_server_parse5_2.cpp)
 target_link_libraries(ros_tcp_server ${catkin_LIBRARIES} )
 install(TARGETS ros_tcp_server RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

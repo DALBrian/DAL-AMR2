@@ -19,9 +19,9 @@
 using namespace std;
 /**
  * @brief Create a ros node which is a ros publisher public info gets from TCP. 
- * @details Add axis control and arm axis limitation check.
+ * @details Add axis control and arm axis limitation check and check isFinish flag before send to arm.
  * @author Small Brian
- * @date 2023/05/27
+ * @date 2023/05/29
  * TODO: Software arm limitation check befroe send; if isFinish false, save it and send next time, don't skip
  **/
 class TCPConnect{
@@ -227,6 +227,7 @@ void TCPConnect::sendtoArm(const tcp_ros::ArmComm& msg){
     Common.XP2[5].ToString() + "</SC></Sensor>");
     */
     ROS_INFO("Receive message from the topic: %s", subtopic.c_str());
+    bool isSend = false;
     std::string sx, sy, sz, sa, sb, sc, isOut, stepmode;
     std::string sa1, sa2, sa3, sa4, sa5, sa6;
     double sx_, sy_, sz_, sa_, sb_, sc_;
@@ -250,12 +251,29 @@ void TCPConnect::sendtoArm(const tcp_ros::ArmComm& msg){
     string packet = "<Sensor><Status><IsOut>" + isOut + "</IsOut></Status><StepMode>" + stepmode + "</StepMode><SX>" + sx + 
         "</SX><SY>" + sy + "</SY><SZ>" + sz + "</SZ><SA>" + sa + "</SA><SB>" + sb+ "</SB><SC>" + sc + "</SC><SA1>"+ sa1 + "</SA1><SA2>" +
         sa2 + "</SA2><SA3>" + sa3 + "</SA3><SA4>" + sa4 + "</SA4><SA5>" + sa5 + "</SA5><SA6>" + sa6 + "</SA6></Sensor>"; 
+
     if (isOpen == true && isFinish == true){
         //  ROS_INFO("IsFinish is TRUE! "); //For debug
         ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
         send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
     }else if(isFinish == false){ROS_WARN("IsFinish is False, wait for arm finish current movement.");}
     else{ROS_WARN("Cannot send msg to arm, ISOpen is false");}
+
+    
+    while (isSend == false){
+        if (isOpen == true && isFinish == true){
+            //  ROS_INFO("IsFinish is TRUE! "); //For debug
+            ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
+            send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
+            isSend = true;
+        }else if(isFinish == false){
+            ROS_WARN("IsFinish is False, wait for arm to finish current movement.");
+            ros::Duration(0.01).sleep();
+        }else{
+            ROS_WARN("Cannot send msg to arm, ISOpen is false");
+            break;}
+
+    }
           
 }
 void TCPConnect::checkAngle(vector<double> &angle){
@@ -264,28 +282,28 @@ void TCPConnect::checkAngle(vector<double> &angle){
     for (size_t i = 0; i < angle.size(); i++){
         switch (i){
             case 0:
-                if (angle[i] < -30){angle[i] = -29; exceedAxis.push_back(i);}
-                else if(angle[i] > 185 ){angle[i] = 184; exceedAxis.push_back(i);}
+                if (angle[i] < -30){angle[i] = -29; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 185 ){angle[i] = 184; exceedAxis.push_back(i+1);}
                 break;
             case 1:
-                if (angle[i] < -116){angle[i] = -115; exceedAxis.push_back(i);}
-                else if(angle[i] > 60 ){angle[i] = 59; exceedAxis.push_back(i);}
+                if (angle[i] < -116){angle[i] = -115; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 60 ){angle[i] = 59; exceedAxis.push_back(i+1);}
                 break;
             case 2:
-                if (angle[i] < 74.55){angle[i] = 73; exceedAxis.push_back(i);}
-                else if(angle[i] > 160 ){angle[i] = 159; exceedAxis.push_back(i);}
+                if (angle[i] < 74.55){angle[i] = 73; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 160 ){angle[i] = 159; exceedAxis.push_back(i+1);}
                 break;
             case 3:
-                if (angle[i] < -175){angle[i] = -174; exceedAxis.push_back(i);}
-                else if(angle[i] > 175 ){angle[i] = 174; exceedAxis.push_back(i);}
+                if (angle[i] < -175){angle[i] = -174; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 175 ){angle[i] = 174; exceedAxis.push_back(i+1);}
                 break;
             case 4:
-                if (angle[i] < -125){angle[i] = -124; exceedAxis.push_back(i);}
-                else if(angle[i] > 125 ){angle[i] = 124; exceedAxis.push_back(i);}
+                if (angle[i] < -125){angle[i] = -124; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 125 ){angle[i] = 124; exceedAxis.push_back(i+1);}
                 break;  
             case 5: 
-                if (angle[i] < -350){angle[i] = -349; exceedAxis.push_back(i);}
-                else if(angle[i] > 350 ){angle[i] = 349; exceedAxis.push_back(i);} 
+                if (angle[i] < -350){angle[i] = -349; exceedAxis.push_back(i+1);}
+                else if(angle[i] > 350 ){angle[i] = 349; exceedAxis.push_back(i+1);} 
                 break;  
         }
         
