@@ -3,7 +3,7 @@
 
 <launch>
     <!-- <include file="$(find motor_control)/launch/motor_launch.launch"/> -->
-    <include file="$(find hector_slam_launch)/launch/bringup_hector_lidar.launch"/>
+    <!-- <include file="$(find hector_slam_launch)/launch/bringup_hector_lidar.launch"/> -->
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <!-- global planner -->
         <param name="base_global_planner" value="global_planner/GlobalPlanner" />

@@ -252,22 +252,21 @@ void TCPConnect::sendtoArm(const tcp_ros::ArmComm& msg){
         "</SX><SY>" + sy + "</SY><SZ>" + sz + "</SZ><SA>" + sa + "</SA><SB>" + sb+ "</SB><SC>" + sc + "</SC><SA1>"+ sa1 + "</SA1><SA2>" +
         sa2 + "</SA2><SA3>" + sa3 + "</SA3><SA4>" + sa4 + "</SA4><SA5>" + sa5 + "</SA5><SA6>" + sa6 + "</SA6></Sensor>"; 
 
-    if (isOpen == true && isFinish == true){
-        //  ROS_INFO("IsFinish is TRUE! "); //For debug
-        ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
-        send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
-    }else if(isFinish == false){ROS_WARN("IsFinish is False, wait for arm finish current movement.");}
-    else{ROS_WARN("Cannot send msg to arm, ISOpen is false");}
-
+    // if (isOpen == true && isFinish == true){
+    //     //  ROS_INFO("IsFinish is TRUE! "); //For debug
+    //     ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
+    //     send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
+    // }else if(isFinish == false){ROS_WARN("IsFinish is False, wait for arm finish current movement.");}
+    // else{ROS_WARN("Cannot send msg to arm, ISOpen is false");}
     
-    while (isSend == false){
+        while (isSend == false){
         if (isOpen == true && isFinish == true){
             //  ROS_INFO("IsFinish is TRUE! "); //For debug
             ROS_INFO("DATA SEND TO ARM: %s", packet.c_str()); // For debug
             send(new_fd, packet.c_str(), strlen(packet.c_str()), 0);
             isSend = true;
         }else if(isFinish == false){
-            ROS_WARN("IsFinish is False, wait for arm to finish current movement.");
+            ROS_WARN("IsFinish is False, wait for arm to finish its current movement.");
             ros::Duration(0.01).sleep();
         }else{
             ROS_WARN("Cannot send msg to arm, ISOpen is false");

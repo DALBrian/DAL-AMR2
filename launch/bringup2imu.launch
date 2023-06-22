@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!-- Launch 2 imus -->
+<launch>
+    <include file="$(find imu360)/launch/imu.launch"/>
+    <include file="$(find handsfree_ros_imu)/launch/IMU_bringup.launch"/>
+</launch>

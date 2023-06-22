@@ -17,6 +17,9 @@ int main(int argc, char **argv){
         bc.sendTransform(tf::StampedTransform(
             tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.818000000000031, -0.236989872766201, 0.485510000000965)),
             ros::Time::now(), "base_link", "IMU_link"));
+        bc.sendTransform(tf::StampedTransform(
+            tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(-0.78509, -0.25886, 0.05725)),
+            ros::Time::now(), "base_link", "IMU_link2"));
             /*If LiDAR installed 90 degree cw from x-positive-axis*/
         // bc.sendTransform(tf::StampedTransform(
         //     tf::Transform(tf::Quaternion(0, 0, 1, 1), tf::Vector3(0.76499999485128, -0.739989872766514, 0.567510000000008)),

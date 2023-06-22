@@ -259,7 +259,6 @@ void TCPConnect::sendtoArm(const tcp_ros::ArmComm& msg){
           
 }
 void TCPConnect::checkAngle(vector<double> &angle){
-    /*20230528 built, haven't test yet*/
     vector<int> exceedAxis;
     for (size_t i = 0; i < angle.size(); i++){
         switch (i){
