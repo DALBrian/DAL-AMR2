@@ -1,5 +1,5 @@
 <!-- Launch PepperFuchs IMU360D-F99 -->
 <launch>
     <node name="imu360" pkg="imu360" type="imu360" output="screen"/>
-    <param name="IP" value="172.31.1.149"/>
+    <param name="IP" value="192.168.1.149"/>
 </launch>

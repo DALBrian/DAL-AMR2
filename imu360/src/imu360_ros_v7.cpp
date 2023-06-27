@@ -12,10 +12,10 @@
 #define g 9.81
 /**
  * @brief P+F IMU integration with ICP-DAS GW-7328D via Modbus TCP/IP
- * @details First do 7328D I/O mapping, then read corresponding IMU data from 7328D
+ * @details Add hex and 2's complement transformation. Previous version is proved to read data correctly, but GW-7328D cannot perform 2's complement itself.
  * @author Small Brian
- * @date 2023/06/07
- * TODO: Haven't tested ROS yet; Individual function tested successful.
+ * @date 2023/06/27
+ *
  **/
 using namespace std;
 class modbus_read{
@@ -26,6 +26,7 @@ class modbus_read{
         void parse();
         void parse2();
         void test();
+        void twocomplement();
     private:
         ros::NodeHandle nh_;
         ros::Publisher imu_pub_;
@@ -36,13 +37,15 @@ class modbus_read{
         string IP, port;
         int start_address = 0;
         int num_registers = 44;
-        uint16_t msg[22];
+        uint16_t msg[44];
+        uint16_t msg_twos[44];
         bool isShow = false;
         double lin_acc_x, lin_acc_y, lin_acc_z;
         double ang_vel_x, ang_vel_y, ang_vel_z;
         double quat_x, quat_y, quat_z, quat_w;
         double temp1, temp2;
         char temp[1] = {0};
+        
 };
 modbus_read::modbus_read(string IP, string port){
     mb = modbus_new_tcp(IP.c_str(), stoi(port));
@@ -69,50 +72,44 @@ void modbus_read::read_input(){
     
     int rc = modbus_read_input_registers(mb, start_address, num_registers, msg);
     if (rc == -1){
-        std::cerr << "Failed to read input " << modbus_strerror(errno) << "\n";
+        std::cerr << "Failed to read input: " << modbus_strerror(errno) << "\n";
     }
-    
+    twocomplement();
     parse();
 }
-void modbus_read::test(){
-    cout << "sizeofmsg" << sizeof(msg) << endl;
-    for (int i = 0; i < sizeof(msg); i++){
-        cout << "Reading: " << i << ": " << msg[i] << endl;
-        // printf("Reading: %d: %d\n", i, msg[i]);
-        // printf("Reading: %d: %2x\n", i, msg[i]);
-    }
-}
 void modbus_read::parse(){
+    
     imu_msg2_.header = "imu2_link";
-    imu_msg2_.accX = msg[5];
-    imu_msg2_.accY = msg[6];
-    imu_msg2_.accZ = msg[7];
-    imu_msg2_.GyroX = msg[10];
-    imu_msg2_.GyroY = msg[11];
-    imu_msg2_.GyroZ = msg[12];
-    imu_msg2_.RotX = msg[15];
-    imu_msg2_.RotY = msg[16];
-    imu_msg2_.RotZ = msg[17];
-    imu_msg2_.GavX = msg[20];
-    imu_msg2_.GavY = msg[21];
-    imu_msg2_.GavZ = msg[22];
-    imu_msg2_.LinX = msg[25];
-    imu_msg2_.LinY = msg[26];
-    imu_msg2_.LinZ = msg[27];
-    imu_msg2_.Roll = msg[30];
-    imu_msg2_.Pitch = msg[31];
-    imu_msg2_.Yaw = msg[32];
-    imu_msg2_.X = msg[35];
-    imu_msg2_.Y = msg[36];
-    imu_msg2_.Z = msg[37];
-    imu_msg2_.W = msg[38];
-    imu_msg2_.temp1 = msg[40];
-    imu_msg2_.temp2 = msg[41];
+    imu_msg2_.accX = msg_twos[5] / 1000.0 * g;
+    imu_msg2_.accY = msg_twos[6] / 1000.0 * g;
+    imu_msg2_.accZ = msg_twos[7] / 1000.0 * g;
+    imu_msg2_.GyroX = msg_twos[10] / 100.0;
+    imu_msg2_.GyroY = msg_twos[11] / 100.0;
+    imu_msg2_.GyroZ = msg_twos[12] / 100.0;
+    imu_msg2_.RotX = msg_twos[15];
+    imu_msg2_.RotY = msg_twos[16];
+    imu_msg2_.RotZ = msg_twos[17];
+    imu_msg2_.GavX = msg_twos[20] / 1000.0;
+    imu_msg2_.GavY = msg_twos[21] / 1000.0;
+    imu_msg2_.GavZ = msg_twos[22] / 1000.0;
+    imu_msg2_.LinX = msg_twos[25] / 1000.0;
+    imu_msg2_.LinY = msg_twos[26] / 1000.0;
+    imu_msg2_.LinZ = msg_twos[27] / 1000.0;
+    imu_msg2_.Roll = msg_twos[30] / 100.0;
+    imu_msg2_.Pitch = msg_twos[31] / 100.0;
+    imu_msg2_.Yaw = msg_twos[32] / 100.0;
+    imu_msg2_.X = msg_twos[35] / 1000.0;
+    imu_msg2_.Y = msg_twos[36] / 1000.0;
+    imu_msg2_.Z = msg_twos[37] / 1000.0;
+    imu_msg2_.W = msg_twos[38] / 1000.0;
+    imu_msg2_.temp1 = msg_twos[40] / 10.0;
+    imu_msg2_.temp2 = msg_twos[41] / 10.0;
 
     imu_pub2_.publish(imu_msg2_);
     // cout<<"published"<<endl;
 }
 void modbus_read::parse2(){
+
     printf("say hi \n");
     for (int i = 0; i < sizeof(msg); i++){
         cout << "Before: " << i << ": " << msg[i] << endl;
@@ -171,6 +168,22 @@ void modbus_read::parse2(){
     }
     imu_pub_.publish(imu_msg_);
     
+}
+void modbus_read::twocomplement(){
+    printf("\n");
+    for (int i = 0; i < 44; i++){
+        msg_twos[i] = 0;
+        if(msg[i] > 32767){
+            msg_twos[i] = (~msg[i]) + 1;
+        }else{msg_twos[i] = msg[i];}
+        msg[i] = 0.0;
+        cout << "Msg before 2's complement " << std::dec <<  i << ": " << 
+        std::dec << msg[i] << endl;
+        // cout << "Msg after 2's complement " << std::dec << i << ": " << 
+        // std::hex << msg_twos[i] << endl;
+        cout << "Msg after 2's complement " << std::dec << i << ": " << 
+        std::dec << msg_twos[i] << endl;
+    }
 }
 int main(int argc, char** argv){
     ros::init(argc, argv, "modbus_read");

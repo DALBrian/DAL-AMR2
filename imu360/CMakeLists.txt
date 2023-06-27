@@ -214,7 +214,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 # catkin_add_nosetests(test)
 
 # find_package(libmodbus REQUIRED)
-add_executable(imu360 src/imu360_ros_v6.cpp)
+add_executable(imu360 src/imu360_ros_v7.cpp)
 # target_link_libraries(imu360 libmodbus)
 # target_include_directories(imu360 PRIVATE ${LIBMODBUS_INCLUDE_DIRS})
 target_link_libraries(imu360 modbus ${catkin_LIBRARIES} )
