@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- Use hector_slam + move_base -->
+
+<launch>
+    <!-- <include file="$(find motor_control)/launch/motor_launch.launch"/> -->
+    <include file="$(find hector_slam_launch)/launch/bringup_hector_lidar.launch"/>
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <!-- global planner -->
+        <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+        <rosparam file="$(find nav_param)/cfg/global_planner_params.yaml" command="load" />
+
+		<!-- DWA local planner -->   
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>      
+        <rosparam file="$(find nav_param)/cfg/dwa_local_planner_params.yaml" command="load"/>
+		<remap from="odom" to="/odometry/filtered"/>
+        
+        <!-- base local planner -->  
+		<!-- <param name="mpc_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>      
+        <rosparam file="$(find nav_param)/cfg/base_local_planner_params.yaml" command="load"/> -->
+
+        <!-- params for move_base -->
+        <param name="planner_frequency" value="5" />
+        <param name="controller_frequency" value="10" /> <!--Original: 10-->
+        <param name="controller_patience" value="3.0" /> 
+        <param name="oscillation_timeout" value="20.0" /> <!--Original: 5-->
+        <param name="oscillation_distance" value="0.5" /> <!--Original: 0.3-->
+        <param name="clearing_rotation_allowed" value="false" />
+        <!-- params for costmap layers --> 
+        <rosparam file="$(find nav_param)/cfg/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find nav_param)/cfg/global_costmap_params.yaml" command="load"/>
+    </node>
+</launch>

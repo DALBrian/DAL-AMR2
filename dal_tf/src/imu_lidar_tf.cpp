@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <iostream>
+#include <math.h>
 /*
     @brief: Broadcast the tf(transformation infomation) of IMU and Lidar. Based on URDF file: DAL_AMR_URDF_v9
     @author: Small Brian
@@ -20,11 +21,12 @@ int main(int argc, char **argv){
         bc.sendTransform(tf::StampedTransform(
             tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(-0.78509, -0.25886, 0.05725)),
             ros::Time::now(), "base_link", "IMU_link2"));
-            /*If LiDAR installed 90 degree cw from x-positive-axis*/
+        /*If LiDAR1 is installed 90 degree cw from x-positive-axis*/
         // bc.sendTransform(tf::StampedTransform(
-        //     tf::Transform(tf::Quaternion(0, 0, 1, 1), tf::Vector3(0.76499999485128, -0.739989872766514, 0.567510000000008)),
+        //     tf::Transform(tf::Quaternion(0, 0, -1, 1), tf::Vector3(0.76499999485128, -0.739989872766514, 0.567510000000008)),
         //     ros::Time::now(), "base_link", "laser_link"));
-        /*If LiDAR installed along x-positive-axis*/
+
+        /*If LiDAR1 is installed along x-positive-axis*/
         bc.sendTransform(tf::StampedTransform(
             tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.76499999485128, -0.739989872766514, 0.567510000000008)),
             ros::Time::now(), "base_link", "laser_link"));

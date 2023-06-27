@@ -4,11 +4,18 @@
 DWAPlannerROS:
   holonomic_robot: true
   
+  #Original
   acc_limit_trans: 4.23
   acc_lim_trans: 4.23
   acc_lim_theta: 2.5
   acc_lim_x: 3
   acc_lim_y: 3
+  # 20230626 Edited by Small Brian
+  # acc_limit_trans: 10
+  # acc_lim_trans: 10
+  # acc_lim_theta: 5
+  # acc_lim_x: 5
+  # acc_lim_y: 5
 
   max_vel_x: 0.5
   min_vel_x: -0.5
